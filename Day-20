@@ -1,0 +1,139 @@
+SESSION 1 CREATING MAVEN APPLICATION AND APPLICATION TESTING
+
+
+Employee:
+=========
+package com.ia.employeecrud;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="emp")
+public class Employee {
+	@Id
+	@Column(name="emmployeeid")
+	private int empid;
+	private String empname;
+	private int empsal;
+	private String empAdd;
+	
+	
+	public int getEmpid() {
+		return empid;
+	}
+	public void setEmpid(int empid) {
+		this.empid = empid;
+	}
+	public String getEmpname() {
+		return empname;
+	}
+	public void setEmpname(String empname) {
+		this.empname = empname;
+	}
+	public int getEmpsal() {
+		return empsal;
+	}
+	public void setEmpsal(int empsal) {
+		this.empsal = empsal;
+	}
+	public String getEmpAdd() {
+		return empAdd;
+	}
+	public void setEmpAdd(String empAdd) {
+		this.empAdd = empAdd;
+	}
+	
+	public Employee() {
+		// TODO Auto-generated constructor stub
+	}
+	public Employee(int empid, String empname, int empsal, String empAdd) {
+		super();
+		this.empid = empid;
+		this.empname = empname;
+		this.empsal = empsal;
+		this.empAdd = empAdd;
+	}
+	@Override
+	public String toString() {
+		return "Employee [empid=" + empid + ", empname=" + empname + ", empsal=" + empsal + ", empAdd=" + empAdd + "]";
+	}
+	
+
+}
+
+
+Test:
+======
+package com.ia.employeecrud;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class Test {
+	
+	public static void main(String[] args) {
+		
+		EntityManagerFactory factory=Persistence.createEntityManagerFactory("sathya");
+		
+		EntityManager entity=factory.createEntityManager(); 
+		
+		//persist()-->save or insert, merge()-->update, remove()-->delte, find()==>selct fetch
+		
+		Employee emp= new Employee(123, "shivam", 1000, "hyd");
+		
+		entity.getTransaction().begin();
+		
+		entity.persist(emp);
+		
+		//Employee emp=entity.find(Employee.class, 123);
+		//System.out.println(emp); 
+		
+//		emp.setEmpAdd("uttarpradesh");
+//		emp.setEmpname("kishan");
+//		emp.setEmpsal(670000);
+		
+		//entity.merge(emp);
+		//entity.remove(emp);
+		
+		
+		entity.getTransaction().commit();
+		
+	}
+
+}
+
+Persistence:
+==============
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                      http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+  version="2.0">
+  
+	<persistence-unit name="sathya" transaction-type="RESOURCE_LOCAL">
+	
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.ia.employeecrud.Employee</class>
+
+		<properties>
+		<!-- database properties -->
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/students" />
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="postgres" />
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			
+			<!-- hibernate properties -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="create"/> <!-- create/update  -->
+			<property name="hibernate.show_sql" value="true"/>
+		</properties>
+		
+	</persistence-unit>
+	
+</persistence>
+
