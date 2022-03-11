@@ -1,0 +1,109 @@
+
+Employee.java
+=================
+
+package com.ia.springcore;
+public class Employee { //beans class or POJO CLASS 
+	
+	private int empid;
+	private String empname;
+	private int empsal;
+	private String empadd;
+	
+	
+	public int getEmpid() {
+		return empid;
+	}
+	public void setEmpid(int empid) { //123
+		this.empid = empid;
+	}
+	public String getEmpname() {
+		return empname;
+	}
+	public void setEmpname(String empname) {//khushi
+		this.empname = empname;
+	}
+	public int getEmpsal() {
+		return empsal;
+	}
+	public void setEmpsal(int empsal) { //2000
+		this.empsal = empsal;
+	}
+	public String getEmpadd() {
+		return empadd;
+	}
+	public void setEmpadd(String empadd) { //vns
+		this.empadd = empadd;
+	}
+	
+	
+	public Employee() {
+		// TODO Auto-generated constructor stub
+	}
+	public Employee(int empid, String empname, int empsal, String empadd) {
+		super();
+		this.empid = empid;
+		this.empname = empname;
+		this.empsal = empsal;
+		this.empadd = empadd;
+	}
+	@Override
+	public String toString() {
+		return "Employee [empid=" + empid + ", empname=" + empname + ", empsal=" + empsal + ", empadd=" + empadd + "]";
+	}
+	}
+  
+  
+  Test.java:
+  ======================
+  package com.ia.springcore;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+public class Test {
+public static void main(String[] args) {
+	
+	
+	//Employee emp= new Employee(123, "bansal", 78203, "jaipur");
+	
+	Resource resource = new ClassPathResource("springConfig.xml");
+	
+	
+	BeanFactory factory= new XmlBeanFactory(resource);
+	
+	  Employee emp =(Employee) factory.getBean("sleeping");
+	  
+	  System.out.println(emp);
+	
+	
+}
+}
+
+springConfig.xml:
+========================
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<context:annotation-config></context:annotation-config>
+
+<bean class="com.ia.springcore.Employee" id="sleeping">    <!--Employee sleeping=new Employee();  -->
+
+<constructor-arg name="empid" value="123"> </constructor-arg>
+<constructor-arg name="empname" value="khushi"> </constructor-arg>   // using constructor injection , setter injection can also be used using property tag
+<constructor-arg name="empsal" value="2000"> </constructor-arg>
+<constructor-arg name="empadd" value="vns"> </constructor-arg>
+</bean>
+
+
+</beans>
