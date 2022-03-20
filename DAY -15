@@ -1,0 +1,292 @@
+SESSION-1
+****************
+
+import java.io.*;
+import java.lang.Thread;
+ 
+class MyThread extends Thread{
+	@Override
+		public void run() {
+	
+		for (int i = 0; i < 10; i++) {
+			System.out.println("child thread");
+		
+		}
+	}	
+}
+
+//now thread demo and Mythread are executing parallely.
+
+public class ThreadDemo {
+	
+public static void main(String[] args) { //main thread
+	
+	MyThread mt= new MyThread();
+	
+	
+	mt.start();// internally call the run method 
+	
+	for (int i = 0; i <10; i++) {
+		
+		System.out.println("main thread");
+		
+	}
+	
+}
+}
+
+-----------------------------------------------------------------------------------------
+
+//by implementing the runnable interface
+
+class X{
+	
+	public int no= 234;
+	public String name = "X is parent of MyTask";
+}
+
+
+class MyTask extends X implements Runnable{//this is the case when My Task is already a child class
+	@Override
+	public void run() {
+		for(int i=0 ; i<=5; i++) {
+			System.out.println("hello there");
+		}
+	}
+	
+}
+
+
+
+public class thread2 {
+
+	public static void main(String args[]) {
+		
+		System.out.println("Started");
+		
+		Runnable r = new MyTask();
+		Thread task = new Thread(r);
+		task.start();// start will call only run method without any arguments, rest methods need to be called explicitly
+		
+		System.out.println("Finished");
+		
+}
+
+}
+-------------------------------------------------------------------------------------------------------------------
+
+
+// Using getName() Method
+
+
+// Helper class extending to Thread class
+class ThreadNaming extends Thread {
+
+	@Override public void run()
+	{
+		
+		System.out.println("Fetching current thread name..");
+
+		// Getting the current thread name
+		// using getName() method
+		System.out.println(
+			Thread.currentThread().getName());
+	}
+}
+
+
+//Main class
+class GetnameEx {
+
+
+	public static void main(String[] args)
+	{
+
+		// Creating two threads inside main() method
+		ThreadNaming t1 = new ThreadNaming();
+		ThreadNaming t2 = new ThreadNaming();
+
+		// Starting threads using start() method which
+		// automatically calls run() method
+		t1.start();
+		t2.start();
+	}
+}
+----------------------------------------------------------------------------------------------
+
+
+//Create a Thread by extending Thread class set and get the name of thread.
+
+import java.io.*;
+
+
+class ThreadNaming extends Thread {
+
+	// run() method for thread which is called
+	// as soon as start() is called over threads
+	@Override public void run()
+	{
+
+		// Print statement when run() is called over thread
+		System.out.println("Thread is running.....");
+	}
+}
+
+// Class 2
+// Main class
+class SetNameEx {
+
+	public static void main(String[] args)
+	{
+
+		// Creating two threads 
+		ThreadNaming t1 = new ThreadNaming();
+		ThreadNaming t2 = new ThreadNaming();
+
+		// Fetching the above created threads names
+		// using getName() method
+		System.out.println("Thread 1: " + t1.getName());
+		System.out.println("Thread 2: " + t2.getName());
+
+		t1.start();
+		t2.start();
+
+		// Now changing the name of threads
+		t1.setName("walking");
+		t2.setName("cycling");
+
+		// fetching the new names of threads
+		System.out.println(
+			"Thread names after changing the "
+			+ "thread names");
+
+		// Printing the above names
+		System.out.println("New Thread 1 name: "
+						+ t1.getName());
+		System.out.println("New Thread 2 name: "
+						+ t2.getName());
+	}
+}
+
+-------------------------------------------------------------------------------------------------------------
+
+//Create a Thread by extending Thread class set and get the priority of thread.
+
+
+class Demo1 extends Thread{
+	
+	public void run() {
+		System.out.println("child");
+		System.out.println("child thread :"+Thread.currentThread().getPriority()); //1,
+	}
+}
+
+class PriorityEx {
+public static void main(String[] args) {
+	Demo1 d= new Demo1();
+	d.setPriority(10);
+	d.start();
+	
+	System.out.println("main");
+	System.out.println("main thread :"+Thread.currentThread().getPriority()); //5
+	Thread.currentThread().setPriority(8);
+	System.out.println(Thread.currentThread().getPriority());
+	
+}
+}
+---------------------------------------------------------------------------------------------------------
+Create a Thread by extending Thread class apply yield Method.
+
+
+class Demo3 extends Thread{
+	
+	public void run() {
+		for (int i = 0; i < 10; i++) {
+			System.out.println("seetha thread"); //child thread
+			
+			Thread.yield();
+		}
+	}
+}
+
+
+public class YieldEx {
+   public static void main(String args[]) {
+	
+	Demo3 d= new Demo3();
+	d.start();
+	
+	for (int i = 0; i < 10; i++) {
+		System.out.println("main thread"); //main thread
+	}
+}
+}
+------------------------------------------------------------------------------------------------------------------------
+
+Create a Thread by extending Thread class apply join Method.
+
+class Demo4 extends Thread{
+	
+	public void run() {
+		for (int i = 0; i < 10; i++) {
+			System.out.println("seetha thread"); //child thread
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
+}
+public class JoinEx {
+public static void main(String[] args) throws InterruptedException {
+	
+	Demo4 d= new Demo4();
+	
+	d.start();
+	d.join(10000);
+	
+	for (int i = 0; i < 10; i++) {
+		System.out.println("main thread thread"); //child thread
+		
+		Thread.yield();
+	}
+}
+}
+------------------------------------------------------------------------------------------------------------------------------------
+
+//Create a Thread by extending Thread class apply sleep Method.
+
+// Java Program for sleeping the main thread.
+
+import java.io.*;
+import java.lang.Thread;
+
+class SleepEx{
+	public static void main(String[] args)
+	{
+	try {
+			for (int i = 0; i < 10; i++) {
+			
+				// it will sleep the main thread for 1 sec
+				// ,each time the for loop runs
+				Thread.sleep(1000);
+			
+				System.out.println(i);
+			}
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+}
+
+SESSION 2
+*************
+
+
+
+
